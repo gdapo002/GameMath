@@ -15,31 +15,31 @@ public class Interpolation : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Handles.color = Color.green;
+        
 
         Drawing.DrawVector(
             Vector3.zero,
             GameObjectA.transform.position,
             3f,
-            0.4f
+            0.4f, Color.green
         );
 
-        Handles.color = Color.red;
+       
 
         Drawing.DrawVector(
             Vector3.zero,
             GameObjectB.transform.position,
             3f,
-            0.4f
+            0.4f, Color.red
         );
 
-        Handles.color = Color.blue;
+        
 
         Drawing.DrawVector(
             GameObjectA.transform.position,
             GameObjectB.transform.position - GameObjectA.transform.position,
             3f,
-            0.4f
+            0.4f, Color.blue
         );
         //
         Vector3 interpolatedPosition =
@@ -48,57 +48,57 @@ public class Interpolation : MonoBehaviour
 
         GameObjectC.transform.position = interpolatedPosition;
         //
-        Handles.color = Color.magenta;
+        
 
         Drawing.DrawVector(
             Vector3.zero,
             GameObjectC.transform.position,
             3f,
-            0.4f
+            0.4f, Color.magenta
         );
 
         Vector3 part_of_a = (1f - InterpolationT) * GameObjectA.transform.position;
 
-        Handles.color = Color.cyan;
+        
 
         Drawing.DrawVector(
             Vector3.zero,
             part_of_a,
             3f,
-            0.4f
+            0.4f, Color.cyan
         );
 
         Vector3 part_of_b = InterpolationT * GameObjectB.transform.position;
 
-        Handles.color = Color.yellow;
+        
 
         Drawing.DrawVector(
             Vector3.zero,
             part_of_b,
             3f,
-            0.4f
+            0.4f, Color.yellow
         );
 
         Vector3 vector_from_part_a_to_c = part_of_b;
 
-        Handles.color = Color.darkCyan;
+       
 
         Drawing.DrawVector(
             part_of_a,
             vector_from_part_a_to_c,
             3f,
-            0.4f
+            0.4f, Color.darkCyan
         );
 
         Vector3 vector_from_part_b_to_c = part_of_a;
 
-        Handles.color = Color.darkGoldenRod;
+      
 
         Drawing.DrawVector(
             part_of_b,
             vector_from_part_b_to_c,
             3f,
-            0.4f
+            0.4f, Color.darkGoldenRod
         );
     }
 

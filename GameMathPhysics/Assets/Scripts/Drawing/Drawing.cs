@@ -3,10 +3,11 @@ using UnityEditor;
 
 public class Drawing
 {
-    public static void DrawVector(Vector3 pos, Vector3 vec, float thickness, float coneSize)
+    public static void DrawVector(Vector3 pos, Vector3 vec, float thickness, float coneSize, Color color)
     {
         Vector3 end = pos + vec;
 
+        Handles.color = color;
         Handles.DrawLine(pos, end, thickness);
 
         if (vec.sqrMagnitude < 0.000001f)
