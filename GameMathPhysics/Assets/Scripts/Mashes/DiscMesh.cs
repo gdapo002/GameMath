@@ -9,74 +9,70 @@ public class DiscMesh : MonoBehaviour
     [Range(3, 264)]
     public int Segments = 10;
 
-    public Mesh discmesh;
+    private void Start()
+    {
+        GenerateMesh();
+    }
 
     private void GenerateMesh()
     {
-        if (discmesh == null)
-        {
-            discmesh = new Mesh();
-        }
-        else
-        {
-            discmesh.Clear();
-        }
+        Mesh discmesh = new Mesh();
 
         List<Vector3> verts = new List<Vector3>();
-        verts.Add(Vector3.zero);
-
-        float delta_angle = 360f / Segments;
-        Vector3 point = Vector3.zero;
         List<int> trl_indices = new List<int>();
 
-        for (int i = 0; i <= Segments; i++)
+        
+        verts.Add(Vector3.zero);
+
+        
+        float delta_angle = 2f * Mathf.PI / Segments;
+
+        
+        for (int i = 0; i < Segments; i++)
         {
-            point.x = Radius * Mathf.Cos(Mathf.Deg2Rad * delta_angle * i);
-            point.y = Radius * Mathf.Sin(Mathf.Deg2Rad * delta_angle * i);
-            verts.Add(point);
+            float angle = delta_angle * i;
+            float x = Radius * Mathf.Cos(angle);
+            float z = Radius * Mathf.Sin(angle);
+            verts.Add(new Vector3(x, 0f, z));
         }
 
         
-
-        for (int i = 0; i <= Segments; i++)
+        for (int i = 0; i < Segments; i++)
         {
-            trl_indices.Add(0);
-            trl_indices.Add(i + 2);
-            trl_indices.Add(i + 1);
-            verts.Add(point);
+            int current = i + 1;
+            int next = ((i + 1) % Segments) + 1;
+
+            trl_indices.Add(0);        
+            trl_indices.Add(next);     
+            trl_indices.Add(current);   
         }
 
+        
         discmesh.SetVertices(verts);
         discmesh.SetTriangles(trl_indices, 0);
         discmesh.RecalculateNormals();
-    }
-        
 
-        private void OnDrawGizmos()
-    {
-        GenerateMesh();
+        
         GetComponent<MeshFilter>().sharedMesh = discmesh;
-        float delta_angle = 360f / Segments;   
-        Vector3 point = Vector3.zero;
+    }
 
+    private void OnDrawGizmos()
+    {
         
-        for (int i = 0; i <= Segments; i++)
-        { 
-            point.x = Radius * Mathf.Cos(Mathf.Deg2Rad * delta_angle * i);
-            point.y = Radius * Mathf.Sin(Mathf.Deg2Rad * delta_angle * i);
+        float delta_angle = 2f * Mathf.PI / Segments;
+        for (int i = 0; i < Segments; i++)
+        {
+            float angle = delta_angle * i;
+            Vector3 point = new Vector3(
+                Radius * Mathf.Cos(angle),
+                0f,
+                Radius * Mathf.Sin(angle)
+            );
+            Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(point, 0.1f);
         }
-    }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(Vector3.zero, 0.15f);
     }
 }
