@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FlatDonut : MonoBehaviour
@@ -17,6 +18,7 @@ public class FlatDonut : MonoBehaviour
         Mesh donutmesh = new Mesh();
 
         List<Vector3> verts = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
         List<int> trl_indices = new List<int>();
 
         float delta_angle = 360f / Segments;
@@ -24,18 +26,16 @@ public class FlatDonut : MonoBehaviour
 
         for (int i = 0; i < Segments; i++)
         {
-            float cos = Mathf.Cos(Mathf.Deg2Rad * delta_angle * i);
-            float sin = Mathf.Sin(Mathf.Deg2Rad * delta_angle * i);
+            point.x = Mathf.Cos(Mathf.Deg2Rad * delta_angle * i);
+            point.y = Mathf.Sin(Mathf.Deg2Rad * delta_angle * i);
+            
+            verts.Add(point*InnerRadius);
+            Vector2 uvcoord = new Vector2(point.x, point.y);
+            uvs.Add(0.5f * uvcoord *(InnerRadius/OuterRadius) + new Vector2(0.5f, 0.5f));
 
-            point.x = InnerRadius * cos;
-            point.y = InnerRadius * sin;
-            point.z = 0f;
-            verts.Add(point);
 
-            point.x = OuterRadius * cos;
-            point.y = OuterRadius * sin;
-            point.z = 0f;
-            verts.Add(point);
+            verts.Add(point*OuterRadius);
+            uvs.Add(0.5f * uvcoord + new Vector2(0.5f, 0.5f));
         }
 
         for (int i = 0; i <= Segments - 2; i++)
@@ -67,6 +67,7 @@ public class FlatDonut : MonoBehaviour
 
         donutmesh.SetVertices(verts);
         donutmesh.SetTriangles(trl_indices, 0);
+        donutmesh.SetUVs(0,uvs);
         donutmesh.RecalculateNormals();
 
         GetComponent<MeshFilter>().sharedMesh = donutmesh;
