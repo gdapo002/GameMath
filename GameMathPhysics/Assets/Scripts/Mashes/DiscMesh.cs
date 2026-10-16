@@ -19,6 +19,8 @@ public class DiscMesh : MonoBehaviour
         Mesh discmesh = new Mesh();
 
         List<Vector3> verts = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        uvs.Add(new Vector2(0.5f, 0.5f));
         List<int> trl_indices = new List<int>();
 
         
